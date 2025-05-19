@@ -1,22 +1,28 @@
 "use client";
 
-import { useEpisodesViewModel } from "@/hooks/useEpisodes";
 import { useEpisodesFilter } from "@/hooks/useEpisodesFilter";
 import { useLocalStorageList } from "@/hooks/useLocalStorageList";
-import { useState } from "react";
+import { Episode } from "@/models/Episode";
 import EpisodesCard from "../episodes-card";
 import EpisodesSkeleton from "../skeleton-episodes";
 
 const SEASONS = ["S01", "S02", "S03", "S04", "S05"];
 
-export default function EpisodesList() {
-  const [selectedSeason, setSelectedSeason] = useState("S01");
+interface EpisodeListProps {
+  episodes: Episode[];
+  loading: boolean;
+  title: string;
+  onSeasonChange: (season: string) => void;
+  selectedSeason: string;
+}
 
-  const { episodes, loading, episodesInfo } = useEpisodesViewModel({
-    page: 1,
-    season: selectedSeason,
-  });
-
+export default function EpisodesList({
+  episodes,
+  loading,
+  title,
+  onSeasonChange,
+  selectedSeason,
+}: EpisodeListProps) {
   const { filteredEpisodes, searchQuery } = useEpisodesFilter(episodes);
   const { list: favorites, toggleItem: toggleFavorite } =
     useLocalStorageList("favorites");
@@ -27,9 +33,7 @@ export default function EpisodesList() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-3xl tracking-tight font-creepster">
-          {searchQuery
-            ? `Resultados da busca: "${searchQuery}"`
-            : "Todos os episódios"}
+          {searchQuery ? `Resultados da busca: "${searchQuery}"` : title}
         </h1>
 
         <div className="flex items-center gap-2">
@@ -39,7 +43,7 @@ export default function EpisodesList() {
           <select
             id="season"
             value={selectedSeason}
-            onChange={(e) => setSelectedSeason(e.target.value)}
+            onChange={(e) => onSeasonChange(e.target.value)}
             className="border border-gray-300 rounded px-2 py-1 text-sm"
           >
             {SEASONS.map((season) => (
