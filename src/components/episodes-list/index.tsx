@@ -17,9 +17,6 @@ export default function EpisodesList() {
     season: selectedSeason,
   });
 
-  console.log("episodes", episodes);
-  console.log("episodesInfo", episodesInfo);
-
   const { filteredEpisodes, searchQuery } = useEpisodesFilter(episodes);
   const { list: favorites, toggleItem: toggleFavorite } =
     useLocalStorageList("favorites");
