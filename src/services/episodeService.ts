@@ -29,5 +29,5 @@ export const fetchEpisodesByFilter = async ({
     },
   });
 
-  return data.episodes.results;
+  return data.episodes;
 };

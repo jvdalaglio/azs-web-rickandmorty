@@ -1,17 +1,34 @@
+// hooks/useEpisodes.ts
 import { Episode } from "@/models/Episode";
-import { fetchEpisodes } from "@/services/episodeService";
+import { fetchEpisodesByFilter } from "@/services/episodeService";
 import { useEffect, useState } from "react";
 
-export const useEpisodesViewModel = () => {
+export const useEpisodesViewModel = ({
+  page = 1,
+  name = "",
+  season = "",
+}: {
+  page?: number;
+  name?: string;
+  season?: string;
+}) => {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [episodesInfo, setEpisodesInfo] = useState({
+    pages: 0,
+    next: null,
+    prev: null,
+    count: 0,
+  });
 
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await fetchEpisodes();
-        setEpisodes(data);
+        setLoading(true);
+        const data = await fetchEpisodesByFilter({ page, name, season });
+        setEpisodes(data.results);
+        setEpisodesInfo(data.info);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message || "Erro ao carregar episódios");
@@ -23,7 +40,7 @@ export const useEpisodesViewModel = () => {
       }
     };
     load();
-  }, []);
+  }, [page, name, season]);
 
-  return { episodes, loading, error };
+  return { episodes, loading, error, episodesInfo };
 };

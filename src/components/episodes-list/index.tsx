@@ -1,12 +1,25 @@
-// components/episodes-list/index.tsx
+"use client";
+
 import { useEpisodesViewModel } from "@/hooks/useEpisodes";
 import { useEpisodesFilter } from "@/hooks/useEpisodesFilter";
 import { useLocalStorageList } from "@/hooks/useLocalStorageList";
+import { useState } from "react";
 import EpisodesCard from "../episodes-card";
 import EpisodesSkeleton from "../skeleton-episodes";
 
+const SEASONS = ["S01", "S02", "S03", "S04", "S05"];
+
 export default function EpisodesList() {
-  const { episodes, loading } = useEpisodesViewModel();
+  const [selectedSeason, setSelectedSeason] = useState("S01");
+
+  const { episodes, loading, episodesInfo } = useEpisodesViewModel({
+    page: 1,
+    season: selectedSeason,
+  });
+
+  console.log("episodes", episodes);
+  console.log("episodesInfo", episodesInfo);
+
   const { filteredEpisodes, searchQuery } = useEpisodesFilter(episodes);
   const { list: favorites, toggleItem: toggleFavorite } =
     useLocalStorageList("favorites");
@@ -15,17 +28,36 @@ export default function EpisodesList() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-3xl tracking-tight font-creepster">
           {searchQuery
             ? `Resultados da busca: "${searchQuery}"`
             : "Todos os episódios"}
         </h1>
-        <p className="text-muted-foreground">
-          {filteredEpisodes.length} episódio
-          {filteredEpisodes.length !== 1 ? "s" : ""}
-        </p>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="season" className="text-sm text-muted-foreground">
+            Temporada:
+          </label>
+          <select
+            id="season"
+            value={selectedSeason}
+            onChange={(e) => setSelectedSeason(e.target.value)}
+            className="border border-gray-300 rounded px-2 py-1 text-sm"
+          >
+            {SEASONS.map((season) => (
+              <option key={season} value={season}>
+                {season}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
+
+      <p className="text-muted-foreground">
+        {filteredEpisodes.length} episódio
+        {filteredEpisodes.length !== 1 ? "s" : ""}
+      </p>
 
       {loading ? (
         <EpisodesSkeleton />
