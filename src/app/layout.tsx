@@ -33,9 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${creepster.variable} antialiased bg-background`}
+        className={`${geistSans.variable} ${geistMono.variable} ${creepster.variable} antialiased bg-background max-w-7xl mx-auto p-4`}
       >
-        <Header title="Ricky and Morty" />
+        <Header />
         {children}
       </body>
     </html>

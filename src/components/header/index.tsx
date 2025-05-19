@@ -1,11 +1,15 @@
-interface HeaderProps {
-  title: string;
-}
+import Image from "next/image";
 
-export default function Header({ title }: HeaderProps) {
+export default function Header() {
   return (
-    <div className="flex items-center justify-center h-20 bg-background text-white">
-      <h1 className="text-2xl font-bold font-creepster">{title}</h1>
+    <div className="flex items-center justify-center h-20 bg-background text-white gap-4">
+      <Image
+        src="/logo.png"
+        alt="Logo Ricky and Morty"
+        sizes="100vw"
+        width={140}
+        height={140}
+      />
     </div>
   );
 }
