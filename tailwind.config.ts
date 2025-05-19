@@ -18,6 +18,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
+        creepster: ["var(--font-creepster)"],
       },
       screens: {
         xs: "375px",
