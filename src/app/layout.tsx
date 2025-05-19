@@ -1,18 +1,12 @@
-import Header from "@/components/header";
+import Navbar from "@/components/navbar";
+import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import localFont from "next/font/local";
+import type React from "react";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const inter = Inter({ subsets: ["latin"] });
 
 const creepster = localFont({
   src: "./fonts/Creepster-Regular.ttf",
@@ -21,8 +15,8 @@ const creepster = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Ricky and Morty - Episode List",
-  description: "This is a Rick and Morty episode list app",
+  title: "Rick and Morty Gerenciador de Episódios",
+  description: "Gerencie seus episódios favoritos da série Rick and Morty.",
 };
 
 export default function RootLayout({
@@ -31,12 +25,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${creepster.variable} antialiased bg-background max-w-7xl mx-auto p-4`}
-      >
-        <Header />
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} ${creepster.variable}`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="min-h-screen bg-gradient-to-b from-background to-background/90">
+            <Navbar />
+            <main className="container mx-auto px-4 py-6">{children}</main>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

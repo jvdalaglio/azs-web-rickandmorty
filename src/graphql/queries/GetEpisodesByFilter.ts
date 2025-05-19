@@ -1,9 +1,8 @@
-// graphql/queries/getEpisodes.ts
 import { gql } from "@apollo/client";
 
-export const GET_EPISODES = gql`
-  query GetEpisodes($page: Int) {
-    episodes(page: $page) {
+export const GET_EPISODES_BY_FILTER = gql`
+  query ($page: Int, $name: String, $episode: String) {
+    episodes(page: $page, filter: { name: $name, episode: $episode }) {
       results {
         id
         name

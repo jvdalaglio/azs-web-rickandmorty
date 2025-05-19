@@ -1,7 +1,33 @@
+// services/episodeService.ts
 import { GET_EPISODES } from "@/graphql/queries/GetEpisodes";
+import { GET_EPISODES_BY_FILTER } from "@/graphql/queries/GetEpisodesByFilter";
 import { apolloClient } from "./apolloClient";
 
-export const fetchEpisodes = async () => {
-  const { data } = await apolloClient.query({ query: GET_EPISODES });
+export const fetchEpisodes = async (page: number = 1) => {
+  const { data } = await apolloClient.query({
+    query: GET_EPISODES,
+    variables: { page },
+  });
+  return data.episodes.results;
+};
+
+export const fetchEpisodesByFilter = async ({
+  page = 1,
+  name = "",
+  season = "",
+}: {
+  page?: number;
+  name?: string;
+  season?: string;
+}) => {
+  const { data } = await apolloClient.query({
+    query: GET_EPISODES_BY_FILTER,
+    variables: {
+      page,
+      name,
+      episode: season,
+    },
+  });
+
   return data.episodes.results;
 };

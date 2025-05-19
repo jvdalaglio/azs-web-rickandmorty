@@ -11,7 +11,6 @@ export const useEpisodesViewModel = () => {
     const load = async () => {
       try {
         const data = await fetchEpisodes();
-        console.log("Data:", data);
         setEpisodes(data);
       } catch (err) {
         if (err instanceof Error) {
