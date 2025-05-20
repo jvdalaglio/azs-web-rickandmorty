@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 
 export default function Navbar() {
@@ -24,9 +24,14 @@ export default function Navbar() {
     setFilter(searchQuery);
   };
 
+  const clearFilters = useCallback((): void => {
+    setFilter("");
+    setSearchQuery("");
+  }, [setFilter, setSearchQuery]);
+
   useEffect(() => {
     clearFilters();
-  }, [pathname]);
+  }, [clearFilters, pathname]);
 
   const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
@@ -38,11 +43,6 @@ export default function Navbar() {
     if (value === "") {
       clearFilters();
     }
-  };
-
-  const clearFilters = (): void => {
-    setFilter("");
-    setSearchQuery("");
   };
 
   return (
