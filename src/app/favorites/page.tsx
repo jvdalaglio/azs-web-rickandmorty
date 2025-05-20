@@ -1,21 +1,17 @@
 "use client";
 
 import EpisodesList from "@/components/episodes-list";
-import { useEpisodesViewModel } from "@/hooks/useEpisodes";
+import { useEpisodeContext } from "@/context/EpisodeContext";
 import { useState } from "react";
 
 export default function FavoritesPage() {
   const [season, setSeason] = useState("S01");
-  const { episodes } = useEpisodesViewModel({
-    page: 1,
-    season: season,
-  });
-  const storedFavorites = localStorage.getItem("favorites");
-  const favorites = storedFavorites ? JSON.parse(storedFavorites) : [];
+  const { favoriteEpisodes } = useEpisodeContext();
+  const localFavoritesList = localStorage.getItem("favoritesList");
 
   return (
     <EpisodesList
-      episodes={episodes.filter((episode) => favorites.includes(episode.id))}
+      episodes={JSON.parse(localFavoritesList!) ?? favoriteEpisodes}
       loading={false}
       title={"Favoritos"}
       onSeasonChange={setSeason}

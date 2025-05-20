@@ -1,5 +1,6 @@
 "use client";
 
+import { useEpisodeContext } from "@/context/EpisodeContext";
 import { useEpisodesFilter } from "@/hooks/useEpisodesFilter";
 import { useLocalStorageList } from "@/hooks/useLocalStorageList";
 import { Episode } from "@/models/Episode";
@@ -14,6 +15,7 @@ interface EpisodeListProps {
   title: string;
   onSeasonChange: (season: string) => void;
   selectedSeason: string;
+  showSeasonSelect: boolean;
 }
 
 export default function EpisodesList({
@@ -22,12 +24,21 @@ export default function EpisodesList({
   title,
   onSeasonChange,
   selectedSeason,
+  showSeasonSelect = false,
 }: EpisodeListProps) {
   const { filteredEpisodes, searchQuery } = useEpisodesFilter(episodes);
-  const { list: favorites, toggleItem: toggleFavorite } =
-    useLocalStorageList("favorites");
+  const { addFavoriteEpisode, isFavorite, removeFavoriteEpisode } =
+    useEpisodeContext();
   const { list: watched, toggleItem: toggleWatched } =
     useLocalStorageList("watched");
+
+  const onFavorite = (episode: Episode) => {
+    if (isFavorite(episode.id)) {
+      removeFavoriteEpisode(episode.id);
+    } else {
+      addFavoriteEpisode(episode);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -36,23 +47,25 @@ export default function EpisodesList({
           {searchQuery ? `Resultados da busca: "${searchQuery}"` : title}
         </h1>
 
-        <div className="flex items-center gap-2">
-          <label htmlFor="season" className="text-sm text-muted-foreground">
-            Temporada:
-          </label>
-          <select
-            id="season"
-            value={selectedSeason}
-            onChange={(e) => onSeasonChange(e.target.value)}
-            className="border border-gray-300 rounded px-2 py-1 text-sm"
-          >
-            {SEASONS.map((season) => (
-              <option key={season} value={season}>
-                {season}
-              </option>
-            ))}
-          </select>
-        </div>
+        {showSeasonSelect && (
+          <div className="flex items-center gap-2">
+            <label htmlFor="season" className="text-sm text-muted-foreground">
+              Temporada:
+            </label>
+            <select
+              id="season"
+              value={selectedSeason}
+              onChange={(e) => onSeasonChange(e.target.value)}
+              className="border border-gray-300 rounded px-2 py-1 text-sm"
+            >
+              {SEASONS.map((season) => (
+                <option key={season} value={season}>
+                  {season}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       <p className="text-muted-foreground">
@@ -73,9 +86,9 @@ export default function EpisodesList({
             <EpisodesCard
               key={episode.id}
               episode={episode}
-              isFavorite={favorites.includes(episode.id)}
+              isFavorite={isFavorite(episode.id)}
               isWatched={watched.includes(episode.id)}
-              onFavoriteToggle={() => toggleFavorite(episode.id)}
+              onFavoriteToggle={() => onFavorite(episode)}
               onWatchedToggle={() => toggleWatched(episode.id)}
             />
           ))}

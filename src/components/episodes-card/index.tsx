@@ -12,6 +12,7 @@ import {
 import type { Episode } from "@/models/Episode";
 import { ArrowRight, Eye, Heart } from "lucide-react";
 import Link from "next/link";
+import { JSX } from "react/jsx-dev-runtime";
 
 interface EpisodesCardProps {
   episode: Episode;
@@ -27,7 +28,7 @@ export default function EpisodesCard({
   isWatched,
   onFavoriteToggle,
   onWatchedToggle,
-}: EpisodesCardProps) {
+}: EpisodesCardProps): JSX.Element {
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
       <CardHeader className="pb-2">

@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { EpisodeProvider } from "@/context/EpisodeContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
@@ -33,10 +34,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-gradient-to-b from-background to-background/90">
-            <Navbar />
-            <main className="container mx-auto px-4 py-6">{children}</main>
-          </div>
+          <EpisodeProvider>
+            <div className="min-h-screen bg-gradient-to-b from-background to-background/90">
+              <Navbar />
+              <main className="container mx-auto px-4 py-6">{children}</main>
+            </div>
+          </EpisodeProvider>
         </ThemeProvider>
       </body>
     </html>

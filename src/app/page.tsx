@@ -18,6 +18,7 @@ export default function Home() {
       title={"Todos os episódios"}
       onSeasonChange={(season: string) => setSeason(season)}
       selectedSeason={season}
+      showSeasonSelect={true}
     />
   );
 }

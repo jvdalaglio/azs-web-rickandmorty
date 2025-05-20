@@ -4,6 +4,7 @@ import CharacterCard from "@/components/character-card";
 import EpisodeDetailsSkeleton from "@/components/skeleton-episode-detail";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useEpisodeContext } from "@/context/EpisodeContext";
 import useEpisodeDetails from "@/hooks/useEpisodeDetails";
 import { ArrowLeft, Eye, EyeOff, Heart, HeartOff } from "lucide-react";
 import Link from "next/link";
@@ -14,19 +15,14 @@ export default function EpisodeDetailsPage({
 }: {
   params: { id: string };
 }) {
-  const [isFavorite, setIsFavorite] = useState(false);
   const [isWatched, setIsWatched] = useState(false);
+  const { addFavoriteEpisode, removeFavoriteEpisode, isFavorite } =
+    useEpisodeContext();
   const { episode, episodeCharacters, loadingEpisodeDetails } =
     useEpisodeDetails(params.id);
 
   useEffect(() => {
-    const storedFavorites = localStorage.getItem("favorites");
     const storedWatched = localStorage.getItem("watched");
-
-    if (storedFavorites) {
-      const favorites = JSON.parse(storedFavorites);
-      setIsFavorite(favorites.includes(params.id));
-    }
 
     if (storedWatched) {
       const watched = JSON.parse(storedWatched);
@@ -35,17 +31,12 @@ export default function EpisodeDetailsPage({
   }, [params.id]);
 
   const toggleFavorite = () => {
-    const storedFavorites = localStorage.getItem("favorites");
-    let favorites = storedFavorites ? JSON.parse(storedFavorites) : [];
-
-    if (isFavorite) {
-      favorites = favorites.filter((id: string) => id !== params.id);
+    if (isFavorite(params.id)) {
+      removeFavoriteEpisode(params.id);
     } else {
-      favorites.push(params.id);
+      if (!episode) return;
+      addFavoriteEpisode(episode);
     }
-
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    setIsFavorite(!isFavorite);
   };
 
   const toggleWatched = () => {
@@ -126,9 +117,11 @@ export default function EpisodeDetailsPage({
             variant="outline"
             size="sm"
             onClick={toggleFavorite}
-            className={isFavorite ? "bg-pink-100 dark:bg-pink-900/20" : ""}
+            className={
+              isFavorite(params.id) ? "bg-pink-100 dark:bg-pink-900/20" : ""
+            }
           >
-            {isFavorite ? (
+            {isFavorite(params.id) ? (
               <>
                 <HeartOff className="mr-2 h-4 w-4 text-pink-500" />
                 Unfavorite
