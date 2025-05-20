@@ -7,7 +7,7 @@ Gerencie todos os episódios da famosa série **Rick and Morty** com uma interfa
 ## ✨ Funcionalidades
 
 - ✅ **Listagem completa** de todos os episódios
-- 🔍 **Busca por nome** de episódio (com pesquisa em tempo real)
+- 🔍 **Busca por nome** de episódio (com filtragem no backend)
 - ❤️ **Favoritar e desfavoritar** episódios
 - 👁️ **Marcar como assistido**
 - 📄 **Detalhes completos** do episódio, incluindo:
