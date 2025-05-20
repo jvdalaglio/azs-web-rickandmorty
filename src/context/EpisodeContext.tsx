@@ -23,7 +23,9 @@ const EpisodeContext = createContext<EpisodeContextData>(
   {} as EpisodeContextData
 );
 
-export function EpisodeProvider({ children }: EpisodeProviderProps) {
+export function EpisodeProvider({
+  children,
+}: EpisodeProviderProps): JSX.Element {
   const [favoriteEpisodes, setFavoriteEpisodes] = useState<Episode[]>([]);
 
   useEffect(() => {
@@ -33,13 +35,13 @@ export function EpisodeProvider({ children }: EpisodeProviderProps) {
     }
   }, []);
 
-  function addFavoriteEpisode(episode: Episode) {
+  function addFavoriteEpisode(episode: Episode): void {
     const updatedFavorites = [...favoriteEpisodes, episode];
     setFavoriteEpisodes(updatedFavorites);
     localStorage.setItem("favoritesList", JSON.stringify(updatedFavorites));
   }
 
-  function removeFavoriteEpisode(episodeId: string) {
+  function removeFavoriteEpisode(episodeId: string): void {
     const updatedFavorites = favoriteEpisodes.filter(
       (episode) => episode.id !== episodeId
     );
@@ -47,7 +49,7 @@ export function EpisodeProvider({ children }: EpisodeProviderProps) {
     localStorage.setItem("favoritesList", JSON.stringify(updatedFavorites));
   }
 
-  function isFavorite(episodeId: string) {
+  function isFavorite(episodeId: string): boolean {
     return favoriteEpisodes.some((episode) => episode.id === episodeId);
   }
 

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { EyeOff, HeartOff } from "lucide-react";
 
-export default function EpisodeDetailsSkeleton() {
+export default function EpisodeDetailsSkeleton(): JSX.Element {
   return (
     <div className="space-y-8 animate-pulse">
       {/* Header */}

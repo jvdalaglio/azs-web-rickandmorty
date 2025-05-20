@@ -12,7 +12,9 @@ interface FilterProviderProps {
   children: ReactNode;
 }
 
-export const FilterProvider = ({ children }: FilterProviderProps) => {
+export const FilterProvider = ({
+  children,
+}: FilterProviderProps): JSX.Element => {
   const [filter, setFilter] = useState("");
 
   return (

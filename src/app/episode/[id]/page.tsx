@@ -15,8 +15,8 @@ export default function EpisodeDetailsPage({
   params,
 }: {
   params: { id: string };
-}) {
-  const [isWatched, setIsWatched] = useState(false);
+}): JSX.Element {
+  const [isWatched, setIsWatched] = useState<boolean>(false);
   const { addFavoriteEpisode, removeFavoriteEpisode, isFavorite } =
     useEpisodeContext();
   const { episode, episodeCharacters, loadingEpisodeDetails } =

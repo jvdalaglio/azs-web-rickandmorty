@@ -14,12 +14,12 @@ import { Badge } from "../ui/badge";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const { favoriteEpisodes } = useEpisodeContext();
   const { setFilter } = useFilter();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent): void => {
     e.preventDefault();
     setFilter(searchQuery);
   };
@@ -28,7 +28,7 @@ export default function Navbar() {
     clearFilters();
   }, [pathname]);
 
-  const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
 
     if (value.startsWith(" ")) return;
@@ -40,7 +40,7 @@ export default function Navbar() {
     }
   };
 
-  const clearFilters = () => {
+  const clearFilters = (): void => {
     setFilter("");
     setSearchQuery("");
   };

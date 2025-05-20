@@ -7,7 +7,9 @@ interface CharacterCardProps {
   character: Character;
 }
 
-export default function CharacterCard({ character }: CharacterCardProps) {
+export default function CharacterCard({
+  character,
+}: CharacterCardProps): JSX.Element {
   return (
     <Card className="overflow-hidden">
       <div className="aspect-square w-full overflow-hidden">

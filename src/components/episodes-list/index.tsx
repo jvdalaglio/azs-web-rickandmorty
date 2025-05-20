@@ -1,9 +1,9 @@
 "use client";
 
 import { useEpisodeContext } from "@/context/EpisodeContext";
-import { useEpisodesFilter } from "@/hooks/useEpisodesFilter";
 import { useLocalStorageList } from "@/hooks/useLocalStorageList";
 import { Episode } from "@/models/Episode";
+import { ResponseInfo } from "@/models/Response";
 import EpisodesCard from "../episodes-card";
 import Paginator from "../paginator";
 import EpisodesSkeleton from "../skeleton-episodes";
@@ -14,15 +14,11 @@ interface EpisodeListProps {
   episodes: Episode[];
   loading: boolean;
   title: string;
+  subtitle: string;
   onSeasonChange: (season: string) => void;
   selectedSeason: string;
   showSeasonSelect?: boolean;
-  episodesInfo?: {
-    count: number;
-    pages: number;
-    next: number | null;
-    prev: number | null;
-  };
+  episodesInfo?: ResponseInfo;
   onPageChange?: (page: number) => void;
 }
 
@@ -30,13 +26,13 @@ export default function EpisodesList({
   episodes,
   loading,
   title,
+  subtitle,
   onSeasonChange,
   selectedSeason,
   showSeasonSelect = false,
   episodesInfo,
   onPageChange,
-}: EpisodeListProps) {
-  const { filteredEpisodes, searchQuery } = useEpisodesFilter(episodes);
+}: EpisodeListProps): JSX.Element {
   const { addFavoriteEpisode, isFavorite, removeFavoriteEpisode } =
     useEpisodeContext();
   const { list: watched, toggleItem: toggleWatched } =
@@ -53,9 +49,7 @@ export default function EpisodesList({
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-3xl tracking-tight font-creepster">
-          {searchQuery ? `Resultados da busca: "${searchQuery}"` : title}
-        </h1>
+        <h1 className="text-3xl tracking-tight font-creepster">{title}</h1>
 
         {showSeasonSelect && (
           <div className="flex items-center gap-2">
@@ -79,21 +73,21 @@ export default function EpisodesList({
       </div>
 
       <p className="text-muted-foreground">
-        {filteredEpisodes.length} episódio
-        {filteredEpisodes.length !== 1 ? "s" : ""}
+        {episodes.length} episódio
+        {episodes.length !== 1 ? "s" : ""}
       </p>
 
       {loading ? (
         <EpisodesSkeleton />
-      ) : filteredEpisodes.length === 0 ? (
+      ) : episodes.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12">
           <h2 className="text-xl font-semibold">Nenhum episódio encontrado.</h2>
-          <p className="text-muted-foreground">Tente buscar por outro termo.</p>
+          <p className="text-muted-foreground">{subtitle}</p>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredEpisodes.map((episode) => (
+            {episodes.map((episode) => (
               <EpisodesCard
                 key={episode.id}
                 episode={episode}

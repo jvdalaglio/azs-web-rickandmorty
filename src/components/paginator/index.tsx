@@ -11,12 +11,12 @@ export default function Paginator({
   currentPage,
   totalPages,
   onPageChange,
-}: PaginatorProps) {
-  const goToPrevious = () => {
+}: PaginatorProps): JSX.Element {
+  const goToPrevious = (): void => {
     if (currentPage > 1) onPageChange(currentPage - 1);
   };
 
-  const goToNext = () => {
+  const goToNext = (): void => {
     if (currentPage < totalPages) onPageChange(currentPage + 1);
   };
 

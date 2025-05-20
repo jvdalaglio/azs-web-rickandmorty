@@ -1,4 +1,4 @@
-export default function CharacterCardSkeleton() {
+export default function CharacterCardSkeleton(): JSX.Element {
   return (
     <div className="rounded border border-gray-300 p-0 shadow animate-pulse overflow-hidden">
       <div className="aspect-square bg-gray-300 rounded w-full mb-3"></div>{" "}

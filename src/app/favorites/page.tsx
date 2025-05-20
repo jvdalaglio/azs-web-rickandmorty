@@ -5,8 +5,8 @@ import { useEpisodeContext } from "@/context/EpisodeContext";
 import { useFilter } from "@/context/FilterContext";
 import { Suspense, useState } from "react";
 
-export default function FavoritesPage() {
-  const [season, setSeason] = useState("S01");
+export default function FavoritesPage(): JSX.Element {
+  const [season, setSeason] = useState<string>("S01");
   const { favoriteEpisodes } = useEpisodeContext();
   const { filter } = useFilter();
 
@@ -20,6 +20,7 @@ export default function FavoritesPage() {
         )}
         loading={false}
         title={"Favoritos"}
+        subtitle={"Você ainda não marcou nenhum episódio como favorito ❤️."}
         onSeasonChange={setSeason}
         selectedSeason={season}
       />
