@@ -6,7 +6,7 @@ import { EyeOff, HeartOff } from "lucide-react";
 export default function EpisodeDetailsSkeleton() {
   return (
     <div className="space-y-8 animate-pulse">
-      {/* Cabeçalho */}
+      {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2 flex-1">
           <div className="flex items-center gap-1 text-sm bg-gray-300 rounded w-20 h-5"></div>{" "}

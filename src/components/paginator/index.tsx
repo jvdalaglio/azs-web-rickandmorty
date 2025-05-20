@@ -29,7 +29,7 @@ export default function Paginator({
       >
         Anterior
       </Button>
-      <span className="text-sm text-card-foreground">
+      <span className="text-sm text-card-foreground font-semibold border-b-2 border-white">
         Página {currentPage} de {totalPages}
       </span>
       <Button

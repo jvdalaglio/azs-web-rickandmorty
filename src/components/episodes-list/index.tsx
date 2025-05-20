@@ -50,8 +50,6 @@ export default function EpisodesList({
     }
   };
 
-  console.log("episodesInfo", episodesInfo);
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -68,7 +66,7 @@ export default function EpisodesList({
               id="season"
               value={selectedSeason}
               onChange={(e) => onSeasonChange(e.target.value)}
-              className="border border-gray-300 rounded px-2 py-1 text-sm"
+              className="border border-gray-200/20 rounded px-2 py-1 text-sm bg-card"
             >
               {SEASONS.map((season) => (
                 <option key={season} value={season}>

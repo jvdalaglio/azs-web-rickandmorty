@@ -39,15 +39,15 @@ export default function RootLayout({
             <EpisodeProvider>
               <div className="relative min-h-screen w-full overflow-hidden">
                 <div
-                  className="absolute inset-0 z-0 bg-no-repeat bg-fixed bg-cover"
+                  className="absolute inset-0 z-0 bg-no-repeat bg-cover bg-fixed"
                   style={{
-                    backgroundImage: "url('/background-02.png')",
+                    backgroundImage: "url('/background.jpg')",
                   }}
                 />
 
-                <div className="absolute inset-0 z-0 backdrop-blur-[6px]" />
+                <div className="absolute inset-0 z-10 bg-black/60" />
 
-                <div className="relative z-10">
+                <div className="relative z-20">
                   <Navbar />
                   <main className="container mx-auto px-4 py-6">
                     {children}
