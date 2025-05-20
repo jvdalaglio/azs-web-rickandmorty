@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useEpisodeContext } from "@/context/EpisodeContext";
 import useEpisodeDetails from "@/hooks/useEpisodeDetails";
+import { formatDateToCustomPtBr } from "@/utils/formatDate";
 import { ArrowLeft, Eye, EyeOff, Heart, HeartOff } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -22,11 +23,13 @@ export default function EpisodeDetailsPage({
     useEpisodeDetails(params.id);
 
   useEffect(() => {
-    const storedWatched = localStorage.getItem("watched");
+    if (typeof window !== "undefined") {
+      const storedWatched = localStorage.getItem("watched");
 
-    if (storedWatched) {
-      const watched = JSON.parse(storedWatched);
-      setIsWatched(watched.includes(params.id));
+      if (storedWatched) {
+        const watched = JSON.parse(storedWatched);
+        setIsWatched(watched.includes(params.id));
+      }
     }
   }, [params.id]);
 
@@ -85,7 +88,7 @@ export default function EpisodeDetailsPage({
               {episode.episode}
             </Badge>
             <span className="text-sm text-muted-foreground">
-              Data de exibição: {episode.air_date}
+              Data de exibição: {formatDateToCustomPtBr(episode.air_date)}
             </span>
             <span className="text-sm text-muted-foreground">
               {episode.characters.length} personagens
@@ -103,12 +106,12 @@ export default function EpisodeDetailsPage({
             {isWatched ? (
               <>
                 <EyeOff className="mr-2 h-4 w-4" />
-                Unwatched
+                Não visto
               </>
             ) : (
               <>
                 <Eye className="mr-2 h-4 w-4" />
-                Mark as Watched
+                Marcar como visto
               </>
             )}
           </Button>
@@ -124,12 +127,12 @@ export default function EpisodeDetailsPage({
             {isFavorite(params.id) ? (
               <>
                 <HeartOff className="mr-2 h-4 w-4 text-pink-500" />
-                Unfavorite
+                Remover dos Favoritos
               </>
             ) : (
               <>
                 <Heart className="mr-2 h-4 w-4" />
-                Add to Favorites
+                Adicionar aos Favoritos
               </>
             )}
           </Button>

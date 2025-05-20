@@ -5,6 +5,7 @@ import { useEpisodesFilter } from "@/hooks/useEpisodesFilter";
 import { useLocalStorageList } from "@/hooks/useLocalStorageList";
 import { Episode } from "@/models/Episode";
 import EpisodesCard from "../episodes-card";
+import Paginator from "../paginator";
 import EpisodesSkeleton from "../skeleton-episodes";
 
 const SEASONS = ["S01", "S02", "S03", "S04", "S05"];
@@ -15,7 +16,14 @@ interface EpisodeListProps {
   title: string;
   onSeasonChange: (season: string) => void;
   selectedSeason: string;
-  showSeasonSelect: boolean;
+  showSeasonSelect?: boolean;
+  episodesInfo?: {
+    count: number;
+    pages: number;
+    next: number | null;
+    prev: number | null;
+  };
+  onPageChange?: (page: number) => void;
 }
 
 export default function EpisodesList({
@@ -25,6 +33,8 @@ export default function EpisodesList({
   onSeasonChange,
   selectedSeason,
   showSeasonSelect = false,
+  episodesInfo,
+  onPageChange,
 }: EpisodeListProps) {
   const { filteredEpisodes, searchQuery } = useEpisodesFilter(episodes);
   const { addFavoriteEpisode, isFavorite, removeFavoriteEpisode } =
@@ -39,6 +49,8 @@ export default function EpisodesList({
       addFavoriteEpisode(episode);
     }
   };
+
+  console.log("episodesInfo", episodesInfo);
 
   return (
     <div className="space-y-6">
@@ -81,18 +93,28 @@ export default function EpisodesList({
           <p className="text-muted-foreground">Tente buscar por outro termo.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredEpisodes.map((episode) => (
-            <EpisodesCard
-              key={episode.id}
-              episode={episode}
-              isFavorite={isFavorite(episode.id)}
-              isWatched={watched.includes(episode.id)}
-              onFavoriteToggle={() => onFavorite(episode)}
-              onWatchedToggle={() => toggleWatched(episode.id)}
+        <>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {filteredEpisodes.map((episode) => (
+              <EpisodesCard
+                key={episode.id}
+                episode={episode}
+                isFavorite={isFavorite(episode.id)}
+                isWatched={watched.includes(episode.id)}
+                onFavoriteToggle={() => onFavorite(episode)}
+                onWatchedToggle={() => toggleWatched(episode.id)}
+              />
+            ))}
+          </div>
+          {episodesInfo && episodesInfo.pages > 1 && (
+            <Paginator
+              currentPage={episodesInfo.prev ? episodesInfo.prev + 1 : 1}
+              totalPages={episodesInfo.pages}
+              onPageChange={(page) => onPageChange?.(page)}
+              key={1}
             />
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );

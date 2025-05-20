@@ -27,6 +27,7 @@ export const useEpisodesViewModel = ({
       try {
         setLoading(true);
         const data = await fetchEpisodesByFilter({ page, name, season });
+        console.log("data", data);
         setEpisodes(data.results);
         setEpisodesInfo(data.info);
       } catch (err) {

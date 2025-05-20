@@ -2,13 +2,14 @@
 
 import { Input } from "@/components/ui/input";
 import { useEpisodeContext } from "@/context/EpisodeContext";
+import { useFilter } from "@/context/FilterContext";
 import { cn } from "@/lib/utils";
 import { Menu, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 
 export default function Navbar() {
@@ -16,18 +17,42 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const { favoriteEpisodes } = useEpisodeContext();
+  const { setFilter } = useFilter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `/?search=${encodeURIComponent(searchQuery)}`;
+    setFilter(searchQuery);
+  };
+
+  useEffect(() => {
+    clearFilters();
+  }, [pathname]);
+
+  const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value.startsWith(" ")) return;
+
+    setSearchQuery(value);
+
+    if (value === "") {
+      clearFilters();
     }
+  };
+
+  const clearFilters = () => {
+    setFilter("");
+    setSearchQuery("");
   };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2">
+        <Link
+          href="/"
+          className="flex items-center gap-2"
+          onClick={clearFilters}
+        >
           <Image
             src="/logo.png"
             alt="Logo Rick and Morty"
@@ -54,7 +79,7 @@ export default function Navbar() {
               placeholder="Buscar episódios..."
               className="w-full pl-8"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={onFilterChange}
             />
           </form>
           <Link
@@ -91,7 +116,7 @@ export default function Navbar() {
               placeholder="Buscar episódios..."
               className="w-full pl-8"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={onFilterChange}
             />
           </form>
           <div className="flex flex-col gap-2">

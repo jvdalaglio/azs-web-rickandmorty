@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { EpisodeProvider } from "@/context/EpisodeContext";
+import { FilterProvider } from "@/context/FilterContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
@@ -34,12 +35,27 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <EpisodeProvider>
-            <div className="min-h-screen bg-gradient-to-b from-background to-background/90">
-              <Navbar />
-              <main className="container mx-auto px-4 py-6">{children}</main>
-            </div>
-          </EpisodeProvider>
+          <FilterProvider>
+            <EpisodeProvider>
+              <div className="relative min-h-screen w-full overflow-hidden">
+                <div
+                  className="absolute inset-0 z-0 bg-no-repeat bg-fixed bg-cover"
+                  style={{
+                    backgroundImage: "url('/background-02.png')",
+                  }}
+                />
+
+                <div className="absolute inset-0 z-0 backdrop-blur-[6px]" />
+
+                <div className="relative z-10">
+                  <Navbar />
+                  <main className="container mx-auto px-4 py-6">
+                    {children}
+                  </main>
+                </div>
+              </div>
+            </EpisodeProvider>
+          </FilterProvider>
         </ThemeProvider>
       </body>
     </html>

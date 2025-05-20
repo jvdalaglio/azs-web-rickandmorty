@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { Episode } from "@/models/Episode";
+import { formatDateToCustomPtBr } from "@/utils/formatDate";
 import { ArrowRight, Eye, Heart } from "lucide-react";
 import Link from "next/link";
 import { JSX } from "react/jsx-dev-runtime";
@@ -53,7 +54,7 @@ export default function EpisodesCard({
         <div className="space-y-2 text-sm">
           <div className="flex gap-2">
             <span className="text-muted-foreground">Data de exibição:</span>
-            <span>{episode.air_date}</span>
+            <span>{formatDateToCustomPtBr(episode.air_date)}</span>
           </div>
           <div className="flex gap-2">
             <span className="text-muted-foreground">
