@@ -1,6 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
+import { useEpisodeContext } from "@/context/EpisodeContext";
 import { cn } from "@/lib/utils";
 import { Menu, Search, X } from "lucide-react";
 import Image from "next/image";
@@ -8,11 +9,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
+import { Badge } from "../ui/badge";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const { favoriteEpisodes } = useEpisodeContext();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +60,7 @@ export default function Navbar() {
           <Link
             href="/"
             className={cn(
-              "text-sm font-medium transition-colors hover:text-primary",
+              "text-sm font-medium transition-colors hover:text-primary whitespace-nowrap",
               pathname === "/" ? "text-primary" : "text-muted-foreground"
             )}
           >
@@ -66,13 +69,14 @@ export default function Navbar() {
           <Link
             href="/favorites"
             className={cn(
-              "text-sm font-medium transition-colors hover:text-primary",
+              "text-sm font-medium transition-colors hover:text-primary flex gap-2",
               pathname === "/favorites"
                 ? "text-primary"
                 : "text-muted-foreground"
             )}
           >
             Favoritos
+            <Badge>{favoriteEpisodes.length}</Badge>
           </Link>
         </nav>
       </div>
